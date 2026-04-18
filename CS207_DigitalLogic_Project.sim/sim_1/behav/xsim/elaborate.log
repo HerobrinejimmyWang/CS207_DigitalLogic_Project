@@ -1,0 +1,38 @@
+Vivado Simulator 2018.3
+Copyright 1986-1999, 2001-2018 Xilinx, Inc. All Rights Reserved.
+Running: D:/Xilinx/Vivado/2018.3/bin/unwrapped/win64.o/xelab.exe -wto 387201dae02847b78c871010d6a52928 --incr --debug typical --relax --mt 2 -L xil_defaultlib -L unisims_ver -L unimacro_ver -L secureip --snapshot vending_top_tb_behav xil_defaultlib.vending_top_tb xil_defaultlib.glbl -log elaborate.log 
+Using 2 slave threads.
+Starting static elaboration
+Completed static elaboration
+Starting simulation data flow analysis
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/debounce.v" Line 1. Module debounce(COUNTER_MAX=2) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/debounce.v" Line 1. Module debounce(COUNTER_MAX=2) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/debounce.v" Line 1. Module debounce(COUNTER_MAX=2) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/debounce.v" Line 1. Module debounce(COUNTER_MAX=2) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/debounce.v" Line 1. Module debounce(COUNTER_MAX=2) doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/edge_detect.v" Line 1. Module edge_detect doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/edge_detect.v" Line 1. Module edge_detect doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/edge_detect.v" Line 1. Module edge_detect doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/edge_detect.v" Line 1. Module edge_detect doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/edge_detect.v" Line 1. Module edge_detect doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/price_rom.v" Line 1. Module price_rom doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/money_counter.v" Line 1. Module money_counter doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/change_calc.v" Line 1. Module change_calc doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/inventory_mgr.v" Line 1. Module inventory_mgr doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/status_led.v" Line 1. Module status_led doesn't have a timescale but at least one module in design has a timescale.
+WARNING: [XSIM 43-4099] "D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.srcs/sources_1/new/seg7_driver.v" Line 1. Module seg7_driver(SCAN_DIV_BITS=4,SEG_ACTIVE_LOW=0,AN_ACTIVE_LOW=0) doesn't have a timescale but at least one module in design has a timescale.
+Completed simulation data flow analysis
+Time Resolution for simulation is 1ps
+Compiling module xil_defaultlib.debounce(COUNTER_MAX=2)
+Compiling module xil_defaultlib.edge_detect
+Compiling module xil_defaultlib.price_rom
+Compiling module xil_defaultlib.money_counter
+Compiling module xil_defaultlib.change_calc
+Compiling module xil_defaultlib.inventory_mgr
+Compiling module xil_defaultlib.vending_fsm(HOLD_CYCLES=4)
+Compiling module xil_defaultlib.status_led
+Compiling module xil_defaultlib.seg7_driver(SCAN_DIV_BITS=4,SEG_...
+Compiling module xil_defaultlib.vending_top(DEBOUNCE_CYCLES=2,HO...
+Compiling module xil_defaultlib.vending_top_tb
+Compiling module xil_defaultlib.glbl
+Built simulation snapshot vending_top_tb_behav
