@@ -2,77 +2,105 @@
 `include "admin_mode_defs.vh"
 
 module admin_mode_subsystem (
-    input  logic        clk,
-    input  logic        rst,
-    input  logic        tick_1s,
-    input  logic        auth_mode_en,
-    input  logic        admin_mode_en,
-    input  logic        event_valid,
-    input  logic [2:0]  event_type,
-    input  logic [3:0]  event_value,
-    input  logic        sale_stock_dec_req,
-    input  logic        sale_stock_inc_req,
-    input  logic        sale_total_add_req,
-    input  logic [1:0]  sale_item_idx,
-    input  logic [7:0]  sale_amount,
-    output logic [7:0]  price0,
-    output logic [7:0]  price1,
-    output logic [7:0]  price2,
-    output logic [7:0]  price3,
-    output logic [4:0]  stock0,
-    output logic [4:0]  stock1,
-    output logic [4:0]  stock2,
-    output logic [4:0]  stock3,
-    output logic [3:0]  enabled,
-    output logic [15:0] sales_total,
-    output logic [2:0]  auth_state,
-    output logic [7:0]  password_value,
-    output logic [1:0]  wrong_count,
-    output logic        auth_ok,
-    output logic        auth_back_req,
-    output logic        auth_home_req,
-    output logic        alarm_trigger,
-    output logic        auth_error_req,
-    output logic [3:0]  auth_error_code,
-    output logic [3:0]  admin_state,
-    output logic [2:0]  selected_func,
-    output logic [1:0]  selected_item,
-    output logic [7:0]  input_value,
-    output logic        admin_back_req,
-    output logic        admin_home_req,
-    output logic        admin_set_price_req,
-    output logic        admin_add_stock_req,
-    output logic        admin_toggle_enable_req,
-    output logic [1:0]  admin_item_idx,
-    output logic [7:0]  admin_value,
-    output logic        admin_error_req,
-    output logic [3:0]  admin_error_code,
-    output logic [15:0] buffer_current_value,
-    output logic [3:0]  buffer_digit_count,
-    output logic        buffer_input_nonempty,
-    output logic        buffer_input_done,
-    output logic        buffer_input_error
+    input               clk,
+    input               rst,
+    input               tick_1s,
+    input               auth_mode_en,
+    input               admin_mode_en,
+    input               event_valid,
+    input       [2:0]   event_type,
+    input       [3:0]   event_value,
+    input               sale_stock_dec_req,
+    input               sale_stock_inc_req,
+    input               sale_total_add_req,
+    input       [1:0]   sale_item_idx,
+    input       [7:0]   sale_amount,
+    output      [7:0]   price0,
+    output      [7:0]   price1,
+    output      [7:0]   price2,
+    output      [7:0]   price3,
+    output      [4:0]   stock0,
+    output      [4:0]   stock1,
+    output      [4:0]   stock2,
+    output      [4:0]   stock3,
+    output      [3:0]   enabled,
+    output      [15:0]  sales_total,
+    output      [2:0]   auth_state,
+    output      [7:0]   password_value,
+    output      [1:0]   wrong_count,
+    output              auth_ok,
+    output              auth_back_req,
+    output              auth_home_req,
+    output              alarm_trigger,
+    output              auth_error_req,
+    output      [3:0]   auth_error_code,
+    output      [3:0]   admin_state,
+    output      [2:0]   selected_func,
+    output      [1:0]   selected_item,
+    output      [7:0]   input_value,
+    output              admin_back_req,
+    output              admin_home_req,
+    output              admin_set_price_req,
+    output              admin_add_stock_req,
+    output              admin_toggle_enable_req,
+    output      [1:0]   admin_item_idx,
+    output      [7:0]   admin_value,
+    output              admin_error_req,
+    output      [3:0]   admin_error_code,
+    output      [15:0]  buffer_current_value,
+    output      [3:0]   buffer_digit_count,
+    output              buffer_input_nonempty,
+    output              buffer_input_done,
+    output              buffer_input_error
 );
 
     // Shared encodings are defined in admin_mode_defs.vh and reused by all
     // instantiated modules so state/event values remain identical end-to-end.
 
-    logic [2:0] auth_buf_input_mode;
-    logic       auth_buf_load_req;
-    logic       auth_buf_clear_req;
-    logic       auth_buf_commit_req;
+    reg [2:0]   auth_buf_input_mode;
+    reg         auth_buf_load_req;
+    reg         auth_buf_clear_req;
+    reg         auth_buf_commit_req;
 
-    logic [2:0] admin_buf_input_mode;
-    logic       admin_buf_load_req;
-    logic       admin_buf_clear_req;
-    logic       admin_buf_commit_req;
+    reg [2:0]   admin_buf_input_mode;
+    reg         admin_buf_load_req;
+    reg         admin_buf_clear_req;
+    reg         admin_buf_commit_req;
 
-    logic [2:0] shared_buf_input_mode;
-    logic       shared_buf_load_req;
-    logic       shared_buf_clear_req;
-    logic       shared_buf_commit_req;
+    reg [2:0]   shared_buf_input_mode;
+    reg         shared_buf_load_req;
+    reg         shared_buf_clear_req;
+    reg         shared_buf_commit_req;
+    reg [1:0]   active_buf_owner;
+    reg [1:0]   active_buf_owner_d;
+    reg         mode_switch_clear_pulse;
 
-    always_comb begin
+    always @(*) begin
+        if (auth_mode_en) begin
+            active_buf_owner = 2'd1;
+        end else if (admin_mode_en) begin
+            active_buf_owner = 2'd2;
+        end else begin
+            active_buf_owner = 2'd0;
+        end
+    end
+
+    always @(posedge clk or posedge rst) begin
+        if (rst) begin
+            active_buf_owner_d <= 2'd0;
+        end else begin
+            active_buf_owner_d <= active_buf_owner;
+        end
+    end
+
+    always @(*) begin
+        mode_switch_clear_pulse = 1'b0;
+        if (active_buf_owner != active_buf_owner_d) begin
+            mode_switch_clear_pulse = 1'b1;
+        end
+    end
+
+    always @(*) begin
         shared_buf_input_mode = `INPUT_MODE_IDLE;
         shared_buf_load_req   = 1'b0;
         shared_buf_clear_req  = 1'b0;
@@ -88,7 +116,9 @@ module admin_mode_subsystem (
             shared_buf_load_req   = admin_buf_load_req;
             shared_buf_clear_req  = admin_buf_clear_req;
             shared_buf_commit_req = admin_buf_commit_req;
-        end else begin
+        end
+
+        if (mode_switch_clear_pulse) begin
             shared_buf_clear_req = 1'b1;
         end
     end

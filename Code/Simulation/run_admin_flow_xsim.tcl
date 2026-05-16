@@ -8,17 +8,16 @@ file mkdir $scratch_dir
 cd $scratch_dir
 
 puts "Compiling admin flow design and simulation sources..."
-xvlog -sv -work freshlib \
-  "$design_dir/numeric_input_buffer.sv" \
-  "$design_dir/data_manager.sv" \
-  "$design_dir/auth_engine.sv" \
-  "$design_dir/admin_engine.sv" \
-  "$design_dir/admin_mode_subsystem.sv" \
-  "$design_dir/test_design.v" \
-  "$sim_dir/admin_flow_integration_tb.sv"
+exec xvlog -sv -work freshlib \
+  "$design_dir/numeric_input_buffer.v" \
+  "$design_dir/data_manager.v" \
+  "$design_dir/auth_engine.v" \
+  "$design_dir/admin_engine.v" \
+  "$design_dir/admin_mode_subsystem.v" \
+  "$sim_dir/admin_flow_integration_tb.v"
 
 puts "Elaborating admin_flow_integration_tb..."
-xelab -debug typical freshlib.admin_flow_integration_tb -L freshlib -s admin_flow_tb
+exec xelab -debug typical freshlib.admin_flow_integration_tb -L freshlib -s admin_flow_tb
 
 puts "Running simulation..."
-xsim admin_flow_tb -runall
+exec xsim admin_flow_tb -runall

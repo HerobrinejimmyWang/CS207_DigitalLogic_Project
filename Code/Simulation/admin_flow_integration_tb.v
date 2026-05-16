@@ -13,73 +13,73 @@
   end
 
 module admin_flow_integration_tb;
-  localparam logic [2:0] EV_DIGIT      = `EV_DIGIT;
-  localparam logic [2:0] EV_PREV       = `EV_PREV;
-  localparam logic [2:0] EV_BACK       = `EV_BACK;
-  localparam logic [2:0] EV_HOME       = `EV_HOME;
-  localparam logic [2:0] EV_NEXT       = `EV_NEXT;
-  localparam logic [2:0] EV_CLEAR      = `EV_CLEAR;
-  localparam logic [2:0] EV_CONFIRM    = `EV_CONFIRM;
-  localparam logic [2:0] AUTH_STATE_INPUT = `AUTH_STATE_INPUT;
-  localparam logic [3:0] ADMIN_MENU       = `ADMIN_STATE_MENU;
-  localparam logic [3:0] VIEW_ITEMS       = `ADMIN_STATE_VIEW_ITEMS;
-  localparam logic [3:0] SET_PRICE_SELECT_ITEM = `ADMIN_STATE_SET_PRICE_SELECT_ITEM;
-  localparam logic [3:0] SET_PRICE_INPUT       = `ADMIN_STATE_SET_PRICE_INPUT;
-  localparam logic [3:0] SET_PRICE_SUCCESS     = `ADMIN_STATE_SET_PRICE_SUCCESS;
-  localparam logic [3:0] ADD_STOCK_SELECT_ITEM = `ADMIN_STATE_ADD_STOCK_SELECT_ITEM;
-  localparam logic [3:0] ADD_STOCK_INPUT       = `ADMIN_STATE_ADD_STOCK_INPUT;
-  localparam logic [3:0] ADD_STOCK_SUCCESS     = `ADMIN_STATE_ADD_STOCK_SUCCESS;
-  localparam logic [3:0] TOGGLE_SELECT_ITEM    = `ADMIN_STATE_TOGGLE_SELECT_ITEM;
-  localparam logic [3:0] TOGGLE_SUCCESS        = `ADMIN_STATE_TOGGLE_SUCCESS;
-  localparam logic [3:0] ERR_INVALID_INPUT     = `ERR_INVALID_INPUT;
-  localparam logic [3:0] ERR_WRONG_PASSWORD    = `ERR_WRONG_PASSWORD;
+  localparam [2:0] EV_DIGIT      = `EV_DIGIT;
+  localparam [2:0] EV_PREV       = `EV_PREV;
+  localparam [2:0] EV_BACK       = `EV_BACK;
+  localparam [2:0] EV_HOME       = `EV_HOME;
+  localparam [2:0] EV_NEXT       = `EV_NEXT;
+  localparam [2:0] EV_CLEAR      = `EV_CLEAR;
+  localparam [2:0] EV_CONFIRM    = `EV_CONFIRM;
+  localparam [2:0] AUTH_STATE_INPUT = `AUTH_STATE_INPUT;
+  localparam [3:0] ADMIN_MENU       = `ADMIN_STATE_MENU;
+  localparam [3:0] VIEW_ITEMS       = `ADMIN_STATE_VIEW_ITEMS;
+  localparam [3:0] SET_PRICE_SELECT_ITEM = `ADMIN_STATE_SET_PRICE_SELECT_ITEM;
+  localparam [3:0] SET_PRICE_INPUT       = `ADMIN_STATE_SET_PRICE_INPUT;
+  localparam [3:0] SET_PRICE_SUCCESS     = `ADMIN_STATE_SET_PRICE_SUCCESS;
+  localparam [3:0] ADD_STOCK_SELECT_ITEM = `ADMIN_STATE_ADD_STOCK_SELECT_ITEM;
+  localparam [3:0] ADD_STOCK_INPUT       = `ADMIN_STATE_ADD_STOCK_INPUT;
+  localparam [3:0] ADD_STOCK_SUCCESS     = `ADMIN_STATE_ADD_STOCK_SUCCESS;
+  localparam [3:0] TOGGLE_SELECT_ITEM    = `ADMIN_STATE_TOGGLE_SELECT_ITEM;
+  localparam [3:0] TOGGLE_SUCCESS        = `ADMIN_STATE_TOGGLE_SUCCESS;
+  localparam [3:0] ERR_INVALID_INPUT     = `ERR_INVALID_INPUT;
+  localparam [3:0] ERR_WRONG_PASSWORD    = `ERR_WRONG_PASSWORD;
 
-  logic        clk;
-  logic        rst;
-  logic        auth_mode_en;
-  logic        admin_mode_en;
-  logic        event_valid;
-  logic [2:0]  event_type;
-  logic [3:0]  event_value;
-  logic        tick_1s;
+  reg         clk;
+  reg         rst;
+  reg         auth_mode_en;
+  reg         admin_mode_en;
+  reg         event_valid;
+  reg [2:0]   event_type;
+  reg [3:0]   event_value;
+  reg         tick_1s;
 
-  logic [2:0]  auth_state;
-  logic [3:0]  admin_state;
-  logic [7:0]  password_value;
-  logic [1:0]  wrong_count;
-  logic [2:0]  selected_func;
-  logic [1:0]  selected_item;
-  logic [7:0]  input_value;
-  logic [7:0]  price0;
-  logic [7:0]  price1;
-  logic [7:0]  price2;
-  logic [7:0]  price3;
-  logic [4:0]  stock0;
-  logic [4:0]  stock1;
-  logic [4:0]  stock2;
-  logic [4:0]  stock3;
-  logic [3:0]  enabled;
-  logic [15:0] sales_total;
-  logic [15:0] buffer_current_value;
-  logic [3:0]  buffer_digit_count;
-  logic        buffer_input_nonempty;
-  logic        buffer_input_done;
-  logic        buffer_input_error;
-  logic        auth_ok;
-  logic        auth_back_req;
-  logic        auth_home_req;
-  logic        alarm_trigger;
-  logic        admin_back_req;
-  logic        admin_home_req;
-  logic        admin_set_price_req;
-  logic        admin_add_stock_req;
-  logic        admin_toggle_enable_req;
-  logic [1:0]  admin_item_idx;
-  logic [7:0]  admin_value;
-  logic        auth_error_req;
-  logic [3:0]  auth_error_code;
-  logic        admin_error_req;
-  logic [3:0]  admin_error_code;
+  wire [2:0]  auth_state;
+  wire [3:0]  admin_state;
+  wire [7:0]  password_value;
+  wire [1:0]  wrong_count;
+  wire [2:0]  selected_func;
+  wire [1:0]  selected_item;
+  wire [7:0]  input_value;
+  wire [7:0]  price0;
+  wire [7:0]  price1;
+  wire [7:0]  price2;
+  wire [7:0]  price3;
+  wire [4:0]  stock0;
+  wire [4:0]  stock1;
+  wire [4:0]  stock2;
+  wire [4:0]  stock3;
+  wire [3:0]  enabled;
+  wire [15:0] sales_total;
+  wire [15:0] buffer_current_value;
+  wire [3:0]  buffer_digit_count;
+  wire        buffer_input_nonempty;
+  wire        buffer_input_done;
+  wire        buffer_input_error;
+  wire        auth_ok;
+  wire        auth_back_req;
+  wire        auth_home_req;
+  wire        alarm_trigger;
+  wire        admin_back_req;
+  wire        admin_home_req;
+  wire        admin_set_price_req;
+  wire        admin_add_stock_req;
+  wire        admin_toggle_enable_req;
+  wire [1:0]  admin_item_idx;
+  wire [7:0]  admin_value;
+  wire        auth_error_req;
+  wire [3:0]  auth_error_code;
+  wire        admin_error_req;
+  wire [3:0]  admin_error_code;
 
   integer failures;
 
@@ -141,7 +141,7 @@ module admin_flow_integration_tb;
     forever #5 clk = ~clk;
   end
 
-  task automatic pulse_tick_1s;
+  task pulse_tick_1s;
     begin
       @(negedge clk);
       tick_1s = 1'b1;
@@ -150,7 +150,9 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic drive_event(input logic [2:0] ev_type, input logic [3:0] ev_value);
+  task drive_event;
+    input [2:0] ev_type;
+    input [3:0] ev_value;
     begin
       @(negedge clk);
       event_valid = 1'b1;
@@ -163,49 +165,50 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic press_digit(input logic [3:0] digit);
+  task press_digit;
+    input [3:0] digit;
     begin
       drive_event(EV_DIGIT, digit);
     end
   endtask
 
-  task automatic press_confirm;
+  task press_confirm;
     begin
       drive_event(EV_CONFIRM, 4'd0);
     end
   endtask
 
-  task automatic press_clear;
+  task press_clear;
     begin
       drive_event(EV_CLEAR, 4'd0);
     end
   endtask
 
-  task automatic press_prev;
+  task press_prev;
     begin
       drive_event(EV_PREV, 4'd0);
     end
   endtask
 
-  task automatic press_next;
+  task press_next;
     begin
       drive_event(EV_NEXT, 4'd0);
     end
   endtask
 
-  task automatic press_back;
+  task press_back;
     begin
       drive_event(EV_BACK, 4'd0);
     end
   endtask
 
-  task automatic press_home;
+  task press_home;
     begin
       drive_event(EV_HOME, 4'd0);
     end
   endtask
 
-  task automatic reset_dut;
+  task reset_dut;
     begin
       rst          = 1'b1;
       auth_mode_en = 1'b0;
@@ -220,7 +223,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic enter_auth_mode;
+  task enter_auth_mode;
     begin
       auth_mode_en = 1'b1;
       admin_mode_en = 1'b0;
@@ -228,7 +231,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic switch_to_admin_mode;
+  task switch_to_admin_mode;
     begin
       auth_mode_en = 1'b0;
       admin_mode_en = 1'b1;
@@ -236,9 +239,9 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic wait_for_auth_ok;
+  task wait_for_auth_ok;
     integer i;
-    bit seen;
+    reg     seen;
     begin
       seen = 1'b0;
       for (i = 0; i < 6; i = i + 1) begin
@@ -251,7 +254,9 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic auth_with_password(input logic [3:0] d1, input logic [3:0] d2);
+  task auth_with_password;
+    input [3:0] d1;
+    input [3:0] d2;
     begin
       press_digit(d1);
       press_digit(d2);
@@ -260,7 +265,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic reach_admin_mode;
+  task reach_admin_mode;
     begin
       enter_auth_mode;
       auth_with_password(4'd4, 4'd2);
@@ -270,7 +275,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic scenario_auth_success;
+  task scenario_auth_success;
     begin
       $display("Running scenario_auth_success");
       reset_dut;
@@ -282,7 +287,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic scenario_auth_alarm;
+  task scenario_auth_alarm;
     begin
       $display("Running scenario_auth_alarm");
       reset_dut;
@@ -306,7 +311,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic scenario_admin_menu_and_returns;
+  task scenario_admin_menu_and_returns;
     begin
       $display("Running scenario_admin_menu_and_returns");
       reset_dut;
@@ -340,7 +345,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic scenario_set_price_success;
+  task scenario_set_price_success;
     begin
       $display("Running scenario_set_price_success");
       reset_dut;
@@ -373,7 +378,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic scenario_add_stock_saturation;
+  task scenario_add_stock_saturation;
     begin
       $display("Running scenario_add_stock_saturation");
       reset_dut;
@@ -401,7 +406,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic scenario_toggle_and_view_navigation;
+  task scenario_toggle_and_view_navigation;
     begin
       $display("Running scenario_toggle_and_view_navigation");
       reset_dut;
@@ -434,7 +439,7 @@ module admin_flow_integration_tb;
     end
   endtask
 
-  task automatic scenario_invalid_input_and_buffer_clear;
+  task scenario_invalid_input_and_buffer_clear;
     begin
       $display("Running scenario_invalid_input_and_buffer_clear");
       reset_dut;

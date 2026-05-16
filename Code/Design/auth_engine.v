@@ -2,38 +2,43 @@
 `include "admin_mode_defs.vh"
 
 module auth_engine (
-    input  logic        clk,
-    input  logic        rst,
-    input  logic        mode_en,
-    input  logic        event_valid,
-    input  logic [2:0]  event_type,
-    input  logic [3:0]  event_value,
-    input  logic        tick_1s,
-    input  logic [15:0] buf_current_value,
-    input  logic        buf_input_nonempty,
-    input  logic        buf_input_done,
-    input  logic        buf_input_error,
-    output logic [2:0]  auth_state,
-    output logic [7:0]  password_value,
-    output logic [1:0]  wrong_count,
-    output logic        auth_ok,
-    output logic        auth_back_req,
-    output logic        auth_home_req,
-    output logic        alarm_trigger,
-    output logic        error_req,
-    output logic [3:0]  error_code,
-    output logic [2:0]  buf_input_mode,
-    output logic        buf_load_req,
-    output logic        buf_clear_req,
-    output logic        buf_commit_req
+    input               clk,
+    input               rst,
+    input               mode_en,
+    input               event_valid,
+    input       [2:0]   event_type,
+    input       [3:0]   event_value,
+    input               tick_1s,
+    input       [15:0]  buf_current_value,
+    input               buf_input_nonempty,
+    input               buf_input_done,
+    input               buf_input_error,
+    output reg  [2:0]   auth_state,
+    output      [7:0]   password_value,
+    output reg  [1:0]   wrong_count,
+    output reg          auth_ok,
+    output reg          auth_back_req,
+    output reg          auth_home_req,
+    output reg          alarm_trigger,
+    output reg          error_req,
+    output reg  [3:0]   error_code,
+    output      [2:0]   buf_input_mode,
+    output reg          buf_load_req,
+    output reg          buf_clear_req,
+    output reg          buf_commit_req
 );
 
     // Shared encodings in admin_mode_defs.vh:
     // AUTH_INPUT=0, AUTH_CHECK=1, AUTH_FAIL_DISPLAY=2, AUTH_SUCCESS=3,
     // AUTH_ERROR_DISPLAY=4. Password input mode is PASSWORD_BCD2=4.
+    //
+    // wrong_count is cleared whenever mode_en drops or a fresh AUTH entry is
+    // detected (!mode_en_d). That is the integration contract with the outer
+    // mode FSM: leaving AUTH/ALARM and re-entering AUTH must toggle mode_en so
+    // the next authentication attempt starts from a clean wrong_count.
 
-    logic       mode_en_d;
-    logic [7:0] pending_password;
+    reg         mode_en_d;
+    reg [7:0]   pending_password;
 
     assign buf_input_mode = mode_en ? `INPUT_MODE_PASSWORD_BCD2
                                     : `INPUT_MODE_IDLE;
@@ -41,7 +46,7 @@ module auth_engine (
                           ? buf_current_value[7:0]
                           : pending_password;
 
-    always_ff @(posedge clk or posedge rst) begin
+    always @(posedge clk or posedge rst) begin
         if (rst) begin
             auth_state       <= `AUTH_STATE_INPUT;
             pending_password <= 8'd0;

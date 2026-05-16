@@ -2,44 +2,44 @@
 `include "admin_mode_defs.vh"
 
 module admin_engine (
-    input  logic        clk,
-    input  logic        rst,
-    input  logic        mode_en,
-    input  logic        event_valid,
-    input  logic [2:0]  event_type,
-    input  logic [3:0]  event_value,
-    input  logic        tick_1s,
-    input  logic [7:0]  price0,
-    input  logic [7:0]  price1,
-    input  logic [7:0]  price2,
-    input  logic [7:0]  price3,
-    input  logic [4:0]  stock0,
-    input  logic [4:0]  stock1,
-    input  logic [4:0]  stock2,
-    input  logic [4:0]  stock3,
-    input  logic [3:0]  enabled,
-    input  logic [15:0] sales_total,
-    input  logic [15:0] buf_current_value,
-    input  logic        buf_input_nonempty,
-    input  logic        buf_input_done,
-    input  logic        buf_input_error,
-    output logic [3:0]  admin_state,
-    output logic [2:0]  selected_func,
-    output logic [1:0]  selected_item,
-    output logic [7:0]  input_value,
-    output logic        admin_back_req,
-    output logic        admin_home_req,
-    output logic        admin_set_price_req,
-    output logic        admin_add_stock_req,
-    output logic        admin_toggle_enable_req,
-    output logic [1:0]  admin_item_idx,
-    output logic [7:0]  admin_value,
-    output logic        error_req,
-    output logic [3:0]  error_code,
-    output logic [2:0]  buf_input_mode,
-    output logic        buf_load_req,
-    output logic        buf_clear_req,
-    output logic        buf_commit_req
+    input               clk,
+    input               rst,
+    input               mode_en,
+    input               event_valid,
+    input       [2:0]   event_type,
+    input       [3:0]   event_value,
+    input               tick_1s,
+    input       [7:0]   price0,
+    input       [7:0]   price1,
+    input       [7:0]   price2,
+    input       [7:0]   price3,
+    input       [4:0]   stock0,
+    input       [4:0]   stock1,
+    input       [4:0]   stock2,
+    input       [4:0]   stock3,
+    input       [3:0]   enabled,
+    input       [15:0]  sales_total,
+    input       [15:0]  buf_current_value,
+    input               buf_input_nonempty,
+    input               buf_input_done,
+    input               buf_input_error,
+    output reg  [3:0]   admin_state,
+    output reg  [2:0]   selected_func,
+    output reg  [1:0]   selected_item,
+    output      [7:0]   input_value,
+    output reg          admin_back_req,
+    output reg          admin_home_req,
+    output reg          admin_set_price_req,
+    output reg          admin_add_stock_req,
+    output reg          admin_toggle_enable_req,
+    output      [1:0]   admin_item_idx,
+    output      [7:0]   admin_value,
+    output reg          error_req,
+    output reg  [3:0]   error_code,
+    output reg  [2:0]   buf_input_mode,
+    output reg          buf_load_req,
+    output reg          buf_clear_req,
+    output reg          buf_commit_req
 );
 
     // Shared encodings in admin_mode_defs.vh:
@@ -47,10 +47,11 @@ module admin_engine (
     // SET_PRICE_SUCCESS=4, ADD_STOCK_SELECT_ITEM=5, ADD_STOCK_INPUT=6,
     // ADD_STOCK_SUCCESS=7, TOGGLE_SELECT_ITEM=8, TOGGLE_SUCCESS=9, VIEW_TOTAL=10.
 
-    logic       mode_en_d;
-    logic [7:0] committed_value;
+    reg         mode_en_d;
+    reg [7:0]   committed_value;
 
-    function automatic [2:0] func_prev(input logic [2:0] func_value);
+    function [2:0] func_prev;
+        input [2:0] func_value;
         begin
             case (func_value)
                 `ADMIN_FUNC_VIEW_ITEMS: func_prev = `ADMIN_FUNC_VIEW_TOTAL;
@@ -62,7 +63,8 @@ module admin_engine (
         end
     endfunction
 
-    function automatic [2:0] func_next(input logic [2:0] func_value);
+    function [2:0] func_next;
+        input [2:0] func_value;
         begin
             case (func_value)
                 `ADMIN_FUNC_VIEW_ITEMS: func_next = `ADMIN_FUNC_SET_PRICE;
@@ -74,7 +76,8 @@ module admin_engine (
         end
     endfunction
 
-    function automatic [1:0] item_prev(input logic [1:0] item_value);
+    function [1:0] item_prev;
+        input [1:0] item_value;
         begin
             case (item_value)
                 2'd0: item_prev = 2'd3;
@@ -85,13 +88,27 @@ module admin_engine (
         end
     endfunction
 
-    function automatic [1:0] item_next(input logic [1:0] item_value);
+    function [1:0] item_next;
+        input [1:0] item_value;
         begin
             case (item_value)
                 2'd0: item_next = 2'd1;
                 2'd1: item_next = 2'd2;
                 2'd2: item_next = 2'd3;
                 default: item_next = 2'd0;
+            endcase
+        end
+    endfunction
+
+    function [1:0] digit_to_item;
+        input [3:0] digit_value;
+        begin
+            case (digit_value)
+                4'd1: digit_to_item = 2'd0;
+                4'd2: digit_to_item = 2'd1;
+                4'd3: digit_to_item = 2'd2;
+                4'd4: digit_to_item = 2'd3;
+                default: digit_to_item = 2'd0;
             endcase
         end
     endfunction
@@ -103,7 +120,7 @@ module admin_engine (
                           ? buf_current_value[7:0]
                           : committed_value;
 
-    always_comb begin
+    always @(*) begin
         case (admin_state)
             `ADMIN_STATE_SET_PRICE_INPUT: buf_input_mode = `INPUT_MODE_PRICE;
             `ADMIN_STATE_ADD_STOCK_INPUT: buf_input_mode = `INPUT_MODE_STOCK;
@@ -111,7 +128,7 @@ module admin_engine (
         endcase
     end
 
-    always_ff @(posedge clk or posedge rst) begin
+    always @(posedge clk or posedge rst) begin
         if (rst) begin
             admin_state             <= `ADMIN_STATE_MENU;
             selected_func           <= `ADMIN_FUNC_VIEW_ITEMS;
@@ -219,7 +236,7 @@ module admin_engine (
                                     `EV_DIGIT: begin
                                         if ((event_value >= 4'd1) &&
                                             (event_value <= 4'd4)) begin
-                                            selected_item <= event_value[1:0] - 2'd1;
+                                            selected_item <= digit_to_item(event_value);
                                         end else begin
                                             error_req  <= 1'b1;
                                             error_code <= `ERR_INVALID_INPUT;

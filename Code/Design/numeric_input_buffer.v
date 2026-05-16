@@ -2,26 +2,29 @@
 `include "admin_mode_defs.vh"
 
 module numeric_input_buffer (
-    input  logic        clk,
-    input  logic        rst,
-    input  logic        event_valid,
-    input  logic [2:0]  event_type,
-    input  logic [3:0]  event_value,
-    input  logic [2:0]  input_mode,
-    input  logic        load_req,
-    input  logic        clear_req,
-    input  logic        commit_req,
-    output logic [15:0] current_value,
-    output logic [3:0]  digit_count,
-    output logic        input_nonempty,
-    output logic        input_done,
-    output logic        input_error
+    input               clk,
+    input               rst,
+    input               event_valid,
+    input       [2:0]   event_type,
+    input       [3:0]   event_value,
+    input       [2:0]   input_mode,
+    input               load_req,
+    input               clear_req,
+    input               commit_req,
+    output reg  [15:0]  current_value,
+    output reg  [3:0]   digit_count,
+    output reg          input_nonempty,
+    output reg          input_done,
+    output reg          input_error
 );
 
     // Shared encodings are defined in admin_mode_defs.vh:
     // SINGLE_ID=0, AMOUNT=1, PRICE=2, STOCK=3, PASSWORD_BCD2=4, IDLE=7.
+    // INPUT_MODE_AMOUNT is intentionally capped at 255 so the accumulated value
+    // always fits in the downstream 8-bit payment path used by this project.
 
-    function automatic [3:0] mode_max_digits(input logic [2:0] mode);
+    function [3:0] mode_max_digits;
+        input [2:0] mode;
         begin
             case (mode)
                 `INPUT_MODE_SINGLE_ID:     mode_max_digits = 4'd1;
@@ -34,11 +37,10 @@ module numeric_input_buffer (
         end
     endfunction
 
-    function automatic logic commit_valid(
-        input logic [2:0]  mode,
-        input logic [15:0] value,
-        input logic [3:0]  count
-    );
+    function commit_valid;
+        input [2:0]  mode;
+        input [15:0] value;
+        input [3:0]  count;
         begin
             case (mode)
                 `INPUT_MODE_SINGLE_ID:
@@ -66,15 +68,15 @@ module numeric_input_buffer (
         end
     endfunction
 
-    logic [15:0] next_numeric_value;
-    logic [15:0] next_bcd_value;
+    reg [15:0] next_numeric_value;
+    reg [15:0] next_bcd_value;
 
-    always_comb begin
+    always @(*) begin
         next_numeric_value = (current_value * 16'd10) + {12'd0, event_value};
         next_bcd_value     = {current_value[11:0], event_value};
     end
 
-    always_ff @(posedge clk or posedge rst) begin
+    always @(posedge clk or posedge rst) begin
         if (rst) begin
             current_value  <= 16'd0;
             digit_count    <= 4'd0;
