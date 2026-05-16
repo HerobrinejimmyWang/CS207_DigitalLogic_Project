@@ -1,0 +1,20 @@
+CS207_PROJECT.pdf
+
+# Vivado generated directories
+/CS207_DigitalLogic_Project/.Xil/
+/CS207_DigitalLogic_Project/*.cache/
+/CS207_DigitalLogic_Project/*.gen/
+/CS207_DigitalLogic_Project/*.hw/
+/CS207_DigitalLogic_Project/*.ip_user_files/
+/CS207_DigitalLogic_Project/*.runs/
+/CS207_DigitalLogic_Project/*.sim/
+/CS207_DigitalLogic_Project/*.srcs/
+/CS207_DigitalLogic_Project/xsim.dir/
+
+# Vivado generated files
+/CS207_DigitalLogic_Project/*.jou
+/CS207_DigitalLogic_Project/*.log
+/CS207_DigitalLogic_Project/*.pb
+/CS207_DigitalLogic_Project/*.str
+/CS207_DigitalLogic_Project/*.tmp
+/CS207_DigitalLogic_Project/*.wdb

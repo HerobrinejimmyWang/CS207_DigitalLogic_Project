@@ -3,7 +3,7 @@
 <!--                                                         -->
 <!-- Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.   -->
 
-<Project Version="7" Minor="39" Path="D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.xpr">
+<Project Version="7" Minor="39" Path="D:/Desktop/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project/CS207_DigitalLogic_Project.xpr">
   <DefaultLaunch Dir="$PRUNDIR"/>
   <Configuration>
     <Option Name="Id" Val="387201dae02847b78c871010d6a52928"/>
@@ -57,9 +57,9 @@
     <Option Name="MEMEnableMemoryMapGeneration" Val="TRUE"/>
   </Configuration>
   <FileSets Version="1" Minor="31">
-    <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PSRCDIR/sources_1">
+    <FileSet Name="sources_1" Type="DesignSrcs" RelSrcDir="$PPRDIR/../Code/Design">
       <Filter Type="Srcs"/>
-      <File Path="$PSRCDIR/sources_1/new/test_design.v">
+      <File Path="$PPRDIR/../Code/Design/test_design.v">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
@@ -72,9 +72,9 @@
         <Option Name="TopAutoSet" Val="TRUE"/>
       </Config>
     </FileSet>
-    <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PSRCDIR/constrs_1">
+    <FileSet Name="constrs_1" Type="Constrs" RelSrcDir="$PPRDIR/../Code/Constraint">
       <Filter Type="Constrs"/>
-      <File Path="$PSRCDIR/constrs_1/new/test_constraint.xdc">
+      <File Path="$PPRDIR/../Code/Constraint/test_constraint.xdc">
         <FileInfo>
           <Attr Name="UsedIn" Val="synthesis"/>
           <Attr Name="UsedIn" Val="implementation"/>
