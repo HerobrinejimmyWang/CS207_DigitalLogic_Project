@@ -1,5 +1,33 @@
 CS207_PROJECT.pdf
 
+# ==========================================
+# Vivado Git Ignore List
+# ==========================================
+*.jou
+*.log
+*.str
+*.dmp
+*.pb
+*.backup.*
+.Xil/
+*.sim/
+*.cache/
+*.hw/
+*.ip_user_files/
+*.gen/
+*.wdb
+*.vcd
+xsim.dir/
+.DS_Store
+Thumbs.db
+
+# Ignore the runs directory, but keep .bit and .dcp under runs/impl_1
+*.runs/*
+!*.runs/impl_1/
+*.runs/impl_1/*
+!*.runs/impl_1/*.bit
+!*.runs/impl_1/*.dcp
+
 # Vivado generated directories
 /CS207_DigitalLogic_Project/.Xil/
 /CS207_DigitalLogic_Project/*.cache/
@@ -18,3 +46,23 @@ CS207_PROJECT.pdf
 /CS207_DigitalLogic_Project/*.str
 /CS207_DigitalLogic_Project/*.tmp
 /CS207_DigitalLogic_Project/*.wdb
+
+# Local simulation artifacts
+/Code/Simulation/.xsim_tmp/
+/Code/Simulation/xsim.dir/
+/Code/Simulation/*.jou
+/Code/Simulation/*.log
+/Code/Simulation/*.pb
+/Code/Simulation/*.wdb
+/xsim.dir/
+/xsim.jou
+/xsim.log
+/xvlog.log
+/xvlog.pb
+/xelab.log
+/xelab.pb
+/webtalk.jou
+/webtalk.log
+/webtalk_*.backup.jou
+/webtalk_*.backup.log
+/admin_flow_tb.wdb
