@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "admin_mode_defs.vh"
 
 module sevenseg_controller (
     input               clk,
@@ -47,6 +48,7 @@ module sevenseg_controller (
 
     wire [1:0] selected_item   = ui_data_bus[9:8];
     wire [2:0] selected_menu   = ui_data_bus[12:10];
+    wire [2:0] ui_mode         = ui_data_bus[2:0];
     wire [7:0] price0          = ui_data_bus[44:37];
     wire [7:0] price1          = ui_data_bus[52:45];
     wire [7:0] price2          = ui_data_bus[60:53];
@@ -483,7 +485,9 @@ module sevenseg_controller (
                                      digit4_char({12'd0, ui_error_code}, 2'd1),
                                      digit4_char({12'd0, ui_error_code}, 2'd2),
                                      digit4_char({12'd0, ui_error_code}, 2'd3)};
-                    bottom_row_chars = {"M","A","I","N"," "," "," "," "};
+                    bottom_row_chars = (ui_mode == `MODE_ADMIN)
+                                     ? {"A","D","M","I","N"," "," "," "}
+                                     : {"M","A","I","N"," "," "," "," "};
                 end
 
                 default: begin

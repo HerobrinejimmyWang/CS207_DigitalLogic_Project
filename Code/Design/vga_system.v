@@ -1,4 +1,5 @@
 `timescale 1ns / 1ps
+`include "admin_mode_defs.vh"
 
 module vga_system (
     input              clk,
@@ -100,6 +101,7 @@ module vga_system (
     wire        text_pixel    = glyph_bits[3'd7 - glyph_x];
     wire        header_band   = visible && (v_count < 10'd56);
     wire        footer_band   = visible && (v_count >= 10'd440);
+    wire [2:0]  current_mode  = ui_data_bus[2:0];
     wire        active_error  = (ui_page == UI_PAGE_ERROR) ||
                                 (ui_page == UI_PAGE_SALE_ERROR) ||
                                 (ui_page == UI_PAGE_AUTH_FAIL) ||
@@ -372,6 +374,219 @@ module vga_system (
         end
     endfunction
 
+    function [7:0] footer_char;
+        input [4:0] page_id;
+        input [6:0] col;
+        begin
+            footer_char = " ";
+
+            case (page_id)
+                UI_PAGE_MAIN_MENU: begin
+                    if (col == 7'd8) begin
+                        footer_char = "A";
+                    end else if (col == 7'd9) begin
+                        footer_char = "/";
+                    end else if (col == 7'd10) begin
+                        footer_char = "D";
+                    end else if ((col >= 7'd12) && (col < 7'd28)) begin
+                        footer_char = word_char(WORD_MENU, col - 7'd12);
+                    end else if (col == 7'd30) begin
+                        footer_char = "1";
+                    end else if (col == 7'd31) begin
+                        footer_char = "/";
+                    end else if (col == 7'd32) begin
+                        footer_char = "2";
+                    end else if (col == 7'd34) begin
+                        footer_char = "S";
+                    end else if (col == 7'd35) begin
+                        footer_char = "E";
+                    end else if (col == 7'd36) begin
+                        footer_char = "L";
+                    end else if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_OK, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_SALE_LIST: begin
+                    if (col == 7'd8) begin
+                        footer_char = "A";
+                    end else if (col == 7'd9) begin
+                        footer_char = "/";
+                    end else if (col == 7'd10) begin
+                        footer_char = "D";
+                    end else if ((col >= 7'd12) && (col < 7'd28)) begin
+                        footer_char = word_char(WORD_ITEM, col - 7'd12);
+                    end else if (col == 7'd30) begin
+                        footer_char = "B";
+                    end else if ((col >= 7'd32) && (col < 7'd48)) begin
+                        footer_char = word_char(WORD_MAIN, col - 7'd32);
+                    end else if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_OK, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_SALE_PAY: begin
+                    if (col == 7'd8) begin
+                        footer_char = "*";
+                    end else if (col == 7'd10) begin
+                        footer_char = "C";
+                    end else if (col == 7'd11) begin
+                        footer_char = "L";
+                    end else if (col == 7'd12) begin
+                        footer_char = "R";
+                    end else if (col == 7'd30) begin
+                        footer_char = "B";
+                    end else if ((col >= 7'd32) && (col < 7'd48)) begin
+                        footer_char = word_char(WORD_ITEM, col - 7'd32);
+                    end else if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_OK, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_SALE_WAIT_TAKE: begin
+                    if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_TAKE, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_AUTH_INPUT: begin
+                    if (col == 7'd8) begin
+                        footer_char = "*";
+                    end else if (col == 7'd10) begin
+                        footer_char = "C";
+                    end else if (col == 7'd11) begin
+                        footer_char = "L";
+                    end else if (col == 7'd12) begin
+                        footer_char = "R";
+                    end else if (col == 7'd30) begin
+                        footer_char = "B";
+                    end else if ((col >= 7'd32) && (col < 7'd48)) begin
+                        footer_char = word_char(WORD_MAIN, col - 7'd32);
+                    end else if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_OK, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_ADMIN_MENU: begin
+                    if (col == 7'd8) begin
+                        footer_char = "A";
+                    end else if (col == 7'd9) begin
+                        footer_char = "/";
+                    end else if (col == 7'd10) begin
+                        footer_char = "D";
+                    end else if ((col >= 7'd12) && (col < 7'd28)) begin
+                        footer_char = word_char(WORD_MENU, col - 7'd12);
+                    end else if (col == 7'd30) begin
+                        footer_char = "1";
+                    end else if (col == 7'd31) begin
+                        footer_char = "-";
+                    end else if (col == 7'd32) begin
+                        footer_char = "5";
+                    end else if (col == 7'd34) begin
+                        footer_char = "S";
+                    end else if (col == 7'd35) begin
+                        footer_char = "E";
+                    end else if (col == 7'd36) begin
+                        footer_char = "L";
+                    end else if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_OK, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_ADMIN_VIEW: begin
+                    if (col == 7'd8) begin
+                        footer_char = "A";
+                    end else if (col == 7'd9) begin
+                        footer_char = "/";
+                    end else if (col == 7'd10) begin
+                        footer_char = "D";
+                    end else if ((col >= 7'd12) && (col < 7'd28)) begin
+                        footer_char = word_char(WORD_ITEM, col - 7'd12);
+                    end else if (col == 7'd30) begin
+                        footer_char = "B";
+                    end else if ((col >= 7'd32) && (col < 7'd48)) begin
+                        footer_char = word_char(WORD_MENU, col - 7'd32);
+                    end else if (col == 7'd52) begin
+                        footer_char = "C";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_MAIN, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_ADMIN_PRICE_SELECT,
+                UI_PAGE_ADMIN_STOCK_SELECT,
+                UI_PAGE_ADMIN_TOGGLE: begin
+                    if (col == 7'd8) begin
+                        footer_char = "A";
+                    end else if (col == 7'd9) begin
+                        footer_char = "/";
+                    end else if (col == 7'd10) begin
+                        footer_char = "D";
+                    end else if ((col >= 7'd12) && (col < 7'd28)) begin
+                        footer_char = word_char(WORD_ITEM, col - 7'd12);
+                    end else if (col == 7'd30) begin
+                        footer_char = "B";
+                    end else if ((col >= 7'd32) && (col < 7'd48)) begin
+                        footer_char = word_char(WORD_MENU, col - 7'd32);
+                    end else if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_OK, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_ADMIN_PRICE_INPUT,
+                UI_PAGE_ADMIN_STOCK_INPUT: begin
+                    if (col == 7'd8) begin
+                        footer_char = "*";
+                    end else if (col == 7'd10) begin
+                        footer_char = "C";
+                    end else if (col == 7'd11) begin
+                        footer_char = "L";
+                    end else if (col == 7'd12) begin
+                        footer_char = "R";
+                    end else if (col == 7'd30) begin
+                        footer_char = "B";
+                    end else if ((col >= 7'd32) && (col < 7'd48)) begin
+                        footer_char = word_char(WORD_ITEM, col - 7'd32);
+                    end else if (col == 7'd52) begin
+                        footer_char = "#";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_OK, col - 7'd54);
+                    end
+                end
+
+                UI_PAGE_ADMIN_TOTAL: begin
+                    if (col == 7'd30) begin
+                        footer_char = "B";
+                    end else if ((col >= 7'd32) && (col < 7'd48)) begin
+                        footer_char = word_char(WORD_MENU, col - 7'd32);
+                    end else if (col == 7'd52) begin
+                        footer_char = "C";
+                    end else if ((col >= 7'd54) && (col < 7'd70)) begin
+                        footer_char = word_char(WORD_MAIN, col - 7'd54);
+                    end
+                end
+
+                default: begin
+                    footer_char = " ";
+                end
+            endcase
+        end
+    endfunction
+
     function [7:0] text_char;
         input [5:0] row;
         input [6:0] col;
@@ -385,17 +600,8 @@ module vga_system (
                 ch = word_char(WORD_MACHINE, col - 7'd40);
             end else if ((row == 6'd5) && (col >= 7'd28) && (col < 7'd44)) begin
                 ch = page_name_char(ui_page, col - 7'd28);
-            end else if ((row == 6'd55) && (col >= 7'd8) && (col < 7'd24)) begin
-                ch = "A";
-                if (col == 7'd9) ch = "/";
-                if (col == 7'd10) ch = "D";
-                if (col >= 7'd12) ch = word_char(WORD_ITEM, col - 7'd12);
-            end else if ((row == 6'd55) && (col >= 7'd30) && (col < 7'd46)) begin
-                ch = "B";
-                if (col >= 7'd32) ch = word_char(WORD_MENU, col - 7'd32);
-            end else if ((row == 6'd55) && (col >= 7'd52) && (col < 7'd68)) begin
-                ch = "#";
-                if (col >= 7'd54) ch = word_char(WORD_OK, col - 7'd54);
+            end else if (row == 6'd55) begin
+                ch = footer_char(ui_page, col);
             end else begin
                 case (ui_page)
                     UI_PAGE_MAIN_MENU: begin
@@ -423,8 +629,7 @@ module vga_system (
 
                     UI_PAGE_SALE_PAY,
                     UI_PAGE_ADMIN_PRICE_INPUT,
-                    UI_PAGE_ADMIN_STOCK_INPUT,
-                    UI_PAGE_AUTH_INPUT: begin
+                    UI_PAGE_ADMIN_STOCK_INPUT: begin
                         if ((row == 6'd16) && (col >= 7'd24) && (col < 7'd40)) begin
                             ch = word_char(WORD_INPUT, col - 7'd24);
                         end else if ((row == 6'd16) && (col >= 7'd42) && (col < 7'd47)) begin
@@ -433,6 +638,16 @@ module vga_system (
                             ch = word_char(WORD_ITEM, col - 7'd24);
                         end else if ((row == 6'd20) && (col >= 7'd42) && (col < 7'd58)) begin
                             ch = item_char(selected_item, col - 7'd42);
+                        end
+                    end
+
+                    UI_PAGE_AUTH_INPUT: begin
+                        if ((row == 6'd16) && (col >= 7'd24) && (col < 7'd40)) begin
+                            ch = word_char(WORD_PASSWORD, col - 7'd24);
+                        end else if ((row == 6'd20) && (col >= 7'd24) && (col < 7'd40)) begin
+                            ch = word_char(WORD_INPUT, col - 7'd24);
+                        end else if ((row == 6'd20) && (col >= 7'd42) && (col < 7'd47)) begin
+                            ch = dec5_char(input_value, col - 7'd42);
                         end
                     end
 
@@ -493,6 +708,14 @@ module vga_system (
                         if (row == 6'd19 && col == 7'd33) ch = "D";
                         if (row == 6'd19 && col == 7'd34) ch = "E";
                         if (row == 6'd19 && col == 7'd36) ch = dec3_char({12'd0, error_code}, 2'd2);
+                        if ((ui_page == UI_PAGE_ERROR) &&
+                            (row == 6'd22) &&
+                            (col >= 7'd28) &&
+                            (col < 7'd44)) begin
+                            ch = (current_mode == `MODE_ADMIN)
+                               ? word_char(WORD_ADMIN, col - 7'd28)
+                               : word_char(WORD_MAIN, col - 7'd28);
+                        end
                     end
 
                     UI_PAGE_ALARM: begin
@@ -554,6 +777,7 @@ module vga_system (
                 ":": case (row) 3'd1: font_row=8'h18; 3'd2: font_row=8'h18; 3'd4: font_row=8'h18; 3'd5: font_row=8'h18; default: font_row=8'h00; endcase
                 "/": case (row) 3'd0: font_row=8'h06; 3'd1: font_row=8'h0c; 3'd2: font_row=8'h18; 3'd3: font_row=8'h30; 3'd4: font_row=8'h60; default: font_row=8'h00; endcase
                 "#": case (row) 3'd1: font_row=8'h24; 3'd2: font_row=8'h7e; 3'd3: font_row=8'h24; 3'd4: font_row=8'h7e; 3'd5: font_row=8'h24; default: font_row=8'h00; endcase
+                "*": case (row) 3'd1: font_row=8'h24; 3'd2: font_row=8'h18; 3'd3: font_row=8'h7e; 3'd4: font_row=8'h18; 3'd5: font_row=8'h24; default: font_row=8'h00; endcase
                 ">": case (row) 3'd1: font_row=8'h40; 3'd2: font_row=8'h20; 3'd3: font_row=8'h10; 3'd4: font_row=8'h20; 3'd5: font_row=8'h40; default: font_row=8'h00; endcase
                 default: font_row = 8'h00;
             endcase

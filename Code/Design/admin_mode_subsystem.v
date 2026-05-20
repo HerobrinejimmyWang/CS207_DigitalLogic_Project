@@ -57,15 +57,15 @@ module admin_mode_subsystem (
     // Shared encodings are defined in admin_mode_defs.vh and reused by all
     // instantiated modules so state/event values remain identical end-to-end.
 
-    reg [2:0]   auth_buf_input_mode;
-    reg         auth_buf_load_req;
-    reg         auth_buf_clear_req;
-    reg         auth_buf_commit_req;
+    wire [2:0]  auth_buf_input_mode;
+    wire        auth_buf_load_req;
+    wire        auth_buf_clear_req;
+    wire        auth_buf_commit_req;
 
-    reg [2:0]   admin_buf_input_mode;
-    reg         admin_buf_load_req;
-    reg         admin_buf_clear_req;
-    reg         admin_buf_commit_req;
+    wire [2:0]  admin_buf_input_mode;
+    wire        admin_buf_load_req;
+    wire        admin_buf_clear_req;
+    wire        admin_buf_commit_req;
 
     reg [2:0]   shared_buf_input_mode;
     reg         shared_buf_load_req;

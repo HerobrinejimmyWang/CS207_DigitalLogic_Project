@@ -424,11 +424,19 @@ module sevenseg_controller_tb;
 
       ui_page       = UI_PAGE_ERROR;
       ui_error_code = 4'd5;
+      ui_data_bus[2:0] = 3'd0;
       wait_cycles(1);
       capture_frame();
       expect_frame({"E","R","R"," ","0","0","0","5"},
                    {"M","A","I","N"," "," "," "," "},
-                   "error frame");
+                   "main error frame");
+
+      ui_data_bus[2:0] = 3'd3;
+      wait_cycles(1);
+      capture_frame();
+      expect_frame({"E","R","R"," ","0","0","0","5"},
+                   {"A","D","M","I","N"," "," "," "},
+                   "admin error frame");
 
       ui_page         = UI_PAGE_ALARM;
       ui_alarm_active = 1'b1;

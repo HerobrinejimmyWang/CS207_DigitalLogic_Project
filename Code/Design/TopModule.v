@@ -34,6 +34,7 @@ module TopModule (
     wire        event_valid;
     wire [2:0]  event_type;
     wire [3:0]  event_value;
+    wire        core_event_valid;
 
     reg  [2:0]  main_selected_menu;
     reg         main_select_sale;
@@ -73,8 +74,6 @@ module TopModule (
     wire [7:0]  sale_amount;
     wire        sale_error_req;
     wire [3:0]  sale_error_code;
-    wire        sale_beep_req;
-
     wire [2:0]  remaining_sec;
     wire        order_timeout;
     wire        order_timer_running;
@@ -121,6 +120,7 @@ module TopModule (
     wire [1:0]  ui_selected_item_src;
     wire [2:0]  ui_selected_menu_src;
     wire [15:0] ui_input_value_src;
+    wire [7:0]  auth_display_value;
     wire [4:0]  ui_page;
     wire [2:0]  ui_mode;
     wire [1:0]  ui_selected_item;
@@ -130,12 +130,15 @@ module TopModule (
     wire [2:0]  ui_countdown;
     wire        ui_alarm_active;
     wire [127:0] ui_data_bus;
+    wire [3:0]  ui_error_code_src;
 
     wire        beep_enable;
     wire [2:0]  beep_type;
+    wire        key_beep_req;
     wire        error_beep_req;
     wire        success_beep_req;
     wire        countdown_beep_req;
+    wire        alarm_beep_active;
     wire [3:0]  vga_r;
     wire [3:0]  vga_g;
     wire [3:0]  vga_b;
@@ -148,23 +151,22 @@ module TopModule (
     assign exp_io[2] = row_active[2] ? 1'b0 : 1'bz;
     assign exp_io[3] = row_active[3] ? 1'b0 : 1'bz;
     assign exp_io[7:4] = 4'bzzzz;
+    assign core_event_valid = event_valid && !error_active;
 
     assign ui_selected_item_src = sale_mode_en ? sale_selected_item : admin_selected_item;
     assign ui_selected_menu_src = admin_mode_en ? admin_selected_func : main_selected_menu;
+    assign auth_display_value   = ({4'd0, password_value[7:4]} * 8'd10) +
+                                  {4'd0, password_value[3:0]};
     assign ui_input_value_src   = sale_mode_en  ? {8'd0, paid_amount} :
-                                  auth_mode_en  ? {8'd0, password_value} :
+                                  auth_mode_en  ? {8'd0, auth_display_value} :
                                   admin_mode_en ? {8'd0, admin_input_value} :
                                                   buffer_current_value;
-
-    assign error_beep_req = error_req_mux;
-    assign success_beep_req = sale_total_add_req |
-                              admin_set_price_req |
-                              admin_add_stock_req |
-                              admin_toggle_enable_req |
-                              auth_ok |
-                              sale_beep_req;
-    assign countdown_beep_req = order_timer_running & tick_1s;
     assign vga_data_pin = {vga_b, vga_g, vga_r};
+    assign ui_error_code_src = error_active ? display_error_code :
+                               (sale_state == `SALE_STATE_ERROR_DISPLAY) ? sale_error_code :
+                               ((auth_state == `AUTH_STATE_FAIL_DISPLAY) ||
+                                (auth_state == `AUTH_STATE_ERROR_DISPLAY)) ? auth_error_code :
+                               `ERR_NONE;
 
     reset_sync u_reset_sync (
         .clk       (clk),
@@ -234,7 +236,7 @@ module TopModule (
         .clk                (clk),
         .rst                (rst),
         .mode_en            (sale_mode_en),
-        .event_valid        (event_valid),
+        .event_valid        (core_event_valid),
         .event_type         (event_type),
         .event_value        (event_value),
         .tick_1s            (tick_1s),
@@ -263,8 +265,7 @@ module TopModule (
         .sale_item_idx      (sale_item_idx),
         .sale_amount        (sale_amount),
         .error_req          (sale_error_req),
-        .error_code         (sale_error_code),
-        .beep_req           (sale_beep_req)
+        .error_code         (sale_error_code)
     );
 
     order_timer u_order_timer (
@@ -284,7 +285,7 @@ module TopModule (
         .tick_1s                 (tick_1s),
         .auth_mode_en            (auth_mode_en),
         .admin_mode_en           (admin_mode_en),
-        .event_valid             (event_valid),
+        .event_valid             (core_event_valid),
         .event_type              (event_type),
         .event_value             (event_value),
         .sale_stock_dec_req      (sale_stock_dec_req),
@@ -364,7 +365,7 @@ module TopModule (
         .sales_total      (sales_total),
         .remaining_sec    (remaining_sec),
         .error_active     (error_active),
-        .error_code       (display_error_code),
+        .error_code       (ui_error_code_src),
         .alarm_active     (alarm_mode_en),
         .ui_page          (ui_page),
         .ui_mode          (ui_mode),
@@ -375,6 +376,27 @@ module TopModule (
         .ui_countdown     (ui_countdown),
         .ui_alarm_active  (ui_alarm_active),
         .ui_data_bus      (ui_data_bus)
+    );
+
+    buzzer_request_adapter u_buzzer_request_adapter (
+        .event_valid             (core_event_valid),
+        .tick_1s                 (tick_1s),
+        .sale_state              (sale_state),
+        .remaining_sec           (remaining_sec),
+        .sale_total_add_req      (sale_total_add_req),
+        .sale_error_req          (sale_error_req),
+        .auth_ok                 (auth_ok),
+        .auth_error_req          (auth_error_req),
+        .admin_set_price_req     (admin_set_price_req),
+        .admin_add_stock_req     (admin_add_stock_req),
+        .admin_toggle_enable_req (admin_toggle_enable_req),
+        .admin_error_req         (admin_error_req),
+        .alarm_mode_en           (alarm_mode_en),
+        .key_beep_req            (key_beep_req),
+        .error_beep_req          (error_beep_req),
+        .success_beep_req        (success_beep_req),
+        .countdown_beep_req      (countdown_beep_req),
+        .alarm_active            (alarm_beep_active)
     );
 
     led_controller u_led_controller (
@@ -407,11 +429,11 @@ module TopModule (
         .clk                (clk),
         .rst                (rst),
         .tick_100ms         (tick_100ms),
-        .key_beep_req       (event_valid),
+        .key_beep_req       (key_beep_req),
         .error_beep_req     (error_beep_req),
         .success_beep_req   (success_beep_req),
         .countdown_beep_req (countdown_beep_req),
-        .alarm_active       (alarm_mode_en),
+        .alarm_active       (alarm_beep_active),
         .beep_enable        (beep_enable),
         .beep_type          (beep_type)
     );
@@ -451,7 +473,7 @@ module TopModule (
             main_error_req    <= 1'b0;
             main_error_code   <= `ERR_NONE;
 
-            if ((current_mode == `MODE_MAIN_MENU) && event_valid && !error_active) begin
+            if ((current_mode == `MODE_MAIN_MENU) && core_event_valid) begin
                 case (event_type)
                     `EV_DIGIT: begin
                         if ((event_value == 4'd1) || (event_value == 4'd2)) begin
@@ -511,12 +533,6 @@ module TopModule (
         end else if (main_error_req) begin
             error_req_mux  = 1'b1;
             error_code_mux = main_error_code;
-        end else if (sale_error_req) begin
-            error_req_mux  = 1'b1;
-            error_code_mux = sale_error_code;
-        end else if (auth_error_req) begin
-            error_req_mux  = 1'b1;
-            error_code_mux = auth_error_code;
         end else if (admin_error_req) begin
             error_req_mux  = 1'b1;
             error_code_mux = admin_error_code;

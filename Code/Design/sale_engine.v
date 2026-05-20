@@ -34,8 +34,7 @@ module sale_engine (
     output     [1:0]   sale_item_idx,
     output     [7:0]   sale_amount,
     output reg         error_req,
-    output reg [3:0]   error_code,
-    output reg         beep_req
+    output reg [3:0]   error_code
 );
 
     reg         mode_en_d;
@@ -132,7 +131,6 @@ module sale_engine (
             sale_total_add_req <= 1'b0;
             error_req          <= 1'b0;
             error_code         <= `ERR_NONE;
-            beep_req           <= 1'b0;
             mode_en_d          <= 1'b0;
             error_return_state <= `SALE_STATE_SHOW_LIST;
         end else begin
@@ -144,7 +142,6 @@ module sale_engine (
             sale_stock_inc_req <= 1'b0;
             sale_total_add_req <= 1'b0;
             error_req          <= 1'b0;
-            beep_req           <= 1'b0;
             mode_en_d          <= mode_en;
 
             if (!mode_en) begin
@@ -176,7 +173,6 @@ module sale_engine (
                                             error_code         <= `ERR_INVALID_INPUT;
                                             error_return_state <= `SALE_STATE_SHOW_LIST;
                                             sale_state         <= `SALE_STATE_ERROR_DISPLAY;
-                                            beep_req           <= 1'b1;
                                         end
                                     end
                                     `EV_PREV: selected_item <= item_prev(selected_item);
@@ -189,13 +185,11 @@ module sale_engine (
                                             error_code         <= `ERR_ITEM_OFF;
                                             error_return_state <= `SALE_STATE_SHOW_LIST;
                                             sale_state         <= `SALE_STATE_ERROR_DISPLAY;
-                                            beep_req           <= 1'b1;
                                         end else if (stock_for_item(selected_item) == 5'd0) begin
                                             error_req          <= 1'b1;
                                             error_code         <= `ERR_NO_STOCK;
                                             error_return_state <= `SALE_STATE_SHOW_LIST;
                                             sale_state         <= `SALE_STATE_ERROR_DISPLAY;
-                                            beep_req           <= 1'b1;
                                         end else begin
                                             latched_price <= price_for_item(selected_item);
                                             paid_amount   <= 8'd0;
@@ -203,12 +197,11 @@ module sale_engine (
                                         end
                                     end
                                     default: begin
-                                        error_req          <= 1'b1;
-                                        error_code         <= `ERR_INVALID_INPUT;
-                                        error_return_state <= `SALE_STATE_SHOW_LIST;
-                                        sale_state         <= `SALE_STATE_ERROR_DISPLAY;
-                                        beep_req           <= 1'b1;
-                                    end
+                                            error_req          <= 1'b1;
+                                            error_code         <= `ERR_INVALID_INPUT;
+                                            error_return_state <= `SALE_STATE_SHOW_LIST;
+                                            sale_state         <= `SALE_STATE_ERROR_DISPLAY;
+                                        end
                                 endcase
                             end
                         end
@@ -224,7 +217,6 @@ module sale_engine (
                                             error_code         <= `ERR_INVALID_INPUT;
                                             error_return_state <= `SALE_STATE_INPUT_MONEY;
                                             sale_state         <= `SALE_STATE_ERROR_DISPLAY;
-                                            beep_req           <= 1'b1;
                                         end
                                     end
                                     `EV_CLEAR: paid_amount <= 8'd0;
@@ -242,13 +234,11 @@ module sale_engine (
                                         if (paid_amount >= latched_price) begin
                                             sale_stock_dec_req <= 1'b1;
                                             sale_state         <= `SALE_STATE_DISPENSE;
-                                            beep_req           <= 1'b1;
                                         end else begin
                                             error_req          <= 1'b1;
                                             error_code         <= `ERR_NOT_ENOUGH;
                                             error_return_state <= `SALE_STATE_INPUT_MONEY;
                                             sale_state         <= `SALE_STATE_ERROR_DISPLAY;
-                                            beep_req           <= 1'b1;
                                         end
                                     end
                                     default: begin
@@ -256,7 +246,6 @@ module sale_engine (
                                         error_code         <= `ERR_INVALID_INPUT;
                                         error_return_state <= `SALE_STATE_INPUT_MONEY;
                                         sale_state         <= `SALE_STATE_ERROR_DISPLAY;
-                                        beep_req           <= 1'b1;
                                     end
                                 endcase
                             end
@@ -274,12 +263,10 @@ module sale_engine (
                                 sale_stock_inc_req <= 1'b1;
                                 order_timer_stop   <= 1'b1;
                                 sale_state         <= `SALE_STATE_TIMEOUT_REFUND;
-                                beep_req           <= 1'b1;
                             end else if (event_valid && (event_type == `EV_CONFIRM)) begin
                                 sale_total_add_req <= 1'b1;
                                 order_timer_stop   <= 1'b1;
                                 sale_state         <= `SALE_STATE_SUCCESS;
-                                beep_req           <= 1'b1;
                             end
                         end
 

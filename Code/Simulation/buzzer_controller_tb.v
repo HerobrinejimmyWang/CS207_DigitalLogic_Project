@@ -78,110 +78,129 @@ module buzzer_controller_tb;
     end
   endtask
 
-  task pulse_key_req;
+  task pulse_requests;
+    input key_req;
+    input error_req;
+    input success_req;
+    input countdown_req;
     begin
       @(negedge clk);
-      key_beep_req = 1'b1;
+      key_beep_req       = key_req;
+      error_beep_req     = error_req;
+      success_beep_req   = success_req;
+      countdown_beep_req = countdown_req;
       @(negedge clk);
-      key_beep_req = 1'b0;
-    end
-  endtask
-
-  task pulse_success_req;
-    begin
-      @(negedge clk);
-      success_beep_req = 1'b1;
-      @(negedge clk);
-      success_beep_req = 1'b0;
-    end
-  endtask
-
-  task scenario_basic_key_and_countdown;
-    begin
-      $display("Running scenario_basic_key_and_countdown");
-      reset_dut();
-
-      `CHECK(!beep_enable, "reset clears beep_enable");
-      `CHECK(beep_type == `BEEP_TYPE_NONE, "reset clears beep_type");
-
-      pulse_key_req();
-      `CHECK(beep_enable, "key request enables beep");
-      `CHECK(beep_type == `BEEP_TYPE_KEY, "key request selects KEY type");
-      pulse_tick_100ms();
-      `CHECK(!beep_enable, "KEY beep stops after one 100ms tick");
-      `CHECK(beep_type == `BEEP_TYPE_NONE, "KEY beep clears type after duration");
-
-      @(negedge clk);
-      countdown_beep_req = 1'b1;
-      @(negedge clk);
+      key_beep_req       = 1'b0;
+      error_beep_req     = 1'b0;
+      success_beep_req   = 1'b0;
       countdown_beep_req = 1'b0;
-      `CHECK(beep_enable, "countdown request enables beep");
-      `CHECK(beep_type == `BEEP_TYPE_COUNTDOWN, "countdown request selects COUNTDOWN type");
-      pulse_tick_100ms();
-      `CHECK(!beep_enable, "COUNTDOWN beep stops after one 100ms tick");
     end
   endtask
 
-  task scenario_priority_and_override;
+  task scenario_reset_and_single_pulses;
     begin
-      $display("Running scenario_priority_and_override");
+      $display("Running scenario_reset_and_single_pulses");
       reset_dut();
 
-      @(negedge clk);
-      key_beep_req   = 1'b1;
-      error_beep_req = 1'b1;
-      @(negedge clk);
-      key_beep_req   = 1'b0;
-      error_beep_req = 1'b0;
-      `CHECK(beep_enable, "simultaneous request enables beep");
+      `CHECK(!beep_enable, "reset leaves beep_enable low");
+      `CHECK(beep_type == `BEEP_TYPE_NONE, "reset leaves beep_type at NONE");
+
+      pulse_requests(1'b1, 1'b0, 1'b0, 1'b0);
+      `CHECK(beep_enable, "key request starts beep");
+      `CHECK(beep_type == `BEEP_TYPE_KEY, "key request selects KEY");
+      pulse_tick_100ms();
+      `CHECK(!beep_enable, "single key beep clears after one tick");
+      `CHECK(beep_type == `BEEP_TYPE_NONE, "single key beep returns to NONE");
+
+      pulse_requests(1'b0, 1'b1, 1'b0, 1'b0);
+      `CHECK(beep_enable, "error request starts beep");
+      `CHECK(beep_type == `BEEP_TYPE_ERROR, "error request selects ERROR");
+      pulse_tick_100ms();
+      `CHECK(beep_enable, "error beep survives first tick");
+      pulse_tick_100ms();
+      `CHECK(beep_enable, "error beep survives second tick");
+      pulse_tick_100ms();
+      `CHECK(!beep_enable, "error beep clears after third tick");
+
+      pulse_requests(1'b0, 1'b0, 1'b1, 1'b0);
+      `CHECK(beep_enable, "success request starts beep");
+      `CHECK(beep_type == `BEEP_TYPE_SUCCESS, "success request selects SUCCESS");
+      pulse_tick_100ms();
+      `CHECK(beep_enable, "success beep survives first tick");
+      pulse_tick_100ms();
+      `CHECK(!beep_enable, "success beep clears after second tick");
+
+      pulse_requests(1'b0, 1'b0, 1'b0, 1'b1);
+      `CHECK(beep_enable, "countdown request starts beep");
+      `CHECK(beep_type == `BEEP_TYPE_COUNTDOWN, "countdown request selects COUNTDOWN");
+      pulse_tick_100ms();
+      `CHECK(!beep_enable, "countdown beep clears after one tick");
+    end
+  endtask
+
+  task scenario_priority_and_preemption;
+    begin
+      $display("Running scenario_priority_and_preemption");
+      reset_dut();
+
+      pulse_requests(1'b1, 1'b1, 1'b0, 1'b0);
+      `CHECK(beep_enable, "simultaneous key/error still starts beep");
       `CHECK(beep_type == `BEEP_TYPE_ERROR, "ERROR has priority over KEY");
+      pulse_tick_100ms();
+      pulse_tick_100ms();
+      pulse_tick_100ms();
 
-      pulse_key_req();
-      `CHECK(beep_type == `BEEP_TYPE_KEY, "new KEY request can start after ERROR request");
-      pulse_success_req();
-      `CHECK(beep_type == `BEEP_TYPE_SUCCESS, "SUCCESS request overrides active KEY beep");
+      pulse_requests(1'b0, 1'b0, 1'b1, 1'b1);
+      `CHECK(beep_type == `BEEP_TYPE_SUCCESS, "SUCCESS outranks COUNTDOWN");
+
+      pulse_requests(1'b1, 1'b0, 1'b0, 1'b0);
+      `CHECK(beep_type == `BEEP_TYPE_SUCCESS, "lower priority KEY is ignored during SUCCESS");
       pulse_tick_100ms();
-      `CHECK(beep_enable, "SUCCESS beep remains active after first 100ms tick");
-      `CHECK(beep_type == `BEEP_TYPE_SUCCESS, "SUCCESS type remains during second tick window");
       pulse_tick_100ms();
-      `CHECK(!beep_enable, "SUCCESS beep stops after two 100ms ticks");
+      `CHECK(!beep_enable, "success beep eventually clears");
+
+      pulse_requests(1'b1, 1'b0, 1'b0, 1'b0);
+      `CHECK(beep_type == `BEEP_TYPE_KEY, "fresh KEY starts after idle");
+      pulse_requests(1'b0, 1'b1, 1'b0, 1'b0);
+      `CHECK(beep_type == `BEEP_TYPE_ERROR, "ERROR preempts active KEY");
     end
   endtask
 
-  task scenario_alarm_priority;
+  task scenario_alarm_and_recovery;
     begin
-      $display("Running scenario_alarm_priority");
+      $display("Running scenario_alarm_and_recovery");
       reset_dut();
 
-      @(negedge clk);
-      alarm_active   = 1'b1;
-      key_beep_req   = 1'b1;
-      error_beep_req = 1'b1;
-      @(negedge clk);
-      key_beep_req   = 1'b0;
-      error_beep_req = 1'b0;
-      `CHECK(beep_enable, "alarm enables beep");
-      `CHECK(beep_type == `BEEP_TYPE_ALARM, "ALARM has highest priority");
+      pulse_requests(1'b0, 1'b0, 1'b0, 1'b1);
+      `CHECK(beep_type == `BEEP_TYPE_COUNTDOWN, "countdown beep enters active state");
 
-      pulse_tick_100ms();
-      pulse_tick_100ms();
-      `CHECK(beep_enable, "alarm stays active across ticks");
-      `CHECK(beep_type == `BEEP_TYPE_ALARM, "alarm type stays active across ticks");
+      @(negedge clk);
+      alarm_active = 1'b1;
+      @(negedge clk);
+      `CHECK(beep_enable, "alarm keeps beep enabled");
+      `CHECK(beep_type == `BEEP_TYPE_ALARM, "alarm preempts active non-alarm beep");
+
+      pulse_requests(1'b1, 1'b1, 1'b1, 1'b1);
+      `CHECK(beep_type == `BEEP_TYPE_ALARM, "alarm ignores other simultaneous requests");
 
       @(negedge clk);
       alarm_active = 1'b0;
       @(negedge clk);
-      `CHECK(!beep_enable, "clearing alarm disables continuous beep");
-      `CHECK(beep_type == `BEEP_TYPE_NONE, "clearing alarm clears beep type");
+      `CHECK(!beep_enable, "dropping alarm returns controller to idle");
+      `CHECK(beep_type == `BEEP_TYPE_NONE, "dropping alarm restores NONE type");
+
+      pulse_requests(1'b1, 1'b0, 1'b0, 1'b0);
+      `CHECK(beep_enable, "controller accepts new request after alarm");
+      `CHECK(beep_type == `BEEP_TYPE_KEY, "post-alarm request still works");
     end
   endtask
 
   initial begin
     failures = 0;
 
-    scenario_basic_key_and_countdown();
-    scenario_priority_and_override();
-    scenario_alarm_priority();
+    scenario_reset_and_single_pulses();
+    scenario_priority_and_preemption();
+    scenario_alarm_and_recovery();
 
     if (failures == 0) begin
       $display("ALL TESTS PASSED");
