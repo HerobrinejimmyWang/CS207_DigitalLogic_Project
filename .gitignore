@@ -66,3 +66,6 @@ Thumbs.db
 /webtalk_*.backup.jou
 /webtalk_*.backup.log
 /admin_flow_tb.wdb
+
+# Agents
+.claude

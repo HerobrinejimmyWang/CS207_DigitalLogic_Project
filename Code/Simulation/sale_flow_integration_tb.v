@@ -48,7 +48,6 @@ module sale_flow_integration_tb;
   wire [7:0]  sale_amount;
   wire        error_req;
   wire [3:0]  error_code;
-  wire        beep_req;
 
   integer failures;
 
@@ -121,8 +120,7 @@ module sale_flow_integration_tb;
       .sale_item_idx(sale_item_idx),
       .sale_amount(sale_amount),
       .error_req(error_req),
-      .error_code(error_code),
-      .beep_req(beep_req)
+      .error_code(error_code)
   );
 
   initial begin
