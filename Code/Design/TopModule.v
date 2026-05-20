@@ -397,6 +397,7 @@ module TopModule (
         .ui_countdown    (ui_countdown),
         .ui_error_code   (ui_error_code),
         .ui_alarm_active (ui_alarm_active),
+        .ui_data_bus     (ui_data_bus),
         .seg_cs_pin      (seg_cs_pin),
         .seg_data_0_pin  (seg_data_0_pin),
         .seg_data_1_pin  (seg_data_1_pin)
