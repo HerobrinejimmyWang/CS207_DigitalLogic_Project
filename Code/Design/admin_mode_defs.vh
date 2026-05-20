@@ -71,4 +71,12 @@
 `define ERR_NO_STOCK         4'd4
 `define ERR_NOT_ENOUGH       4'd5
 
+// Shared buzzer/audio beep type encodings.
+`define BEEP_TYPE_NONE       3'd0
+`define BEEP_TYPE_KEY        3'd1
+`define BEEP_TYPE_ERROR      3'd2
+`define BEEP_TYPE_SUCCESS    3'd3
+`define BEEP_TYPE_COUNTDOWN  3'd4
+`define BEEP_TYPE_ALARM      3'd5
+
 `endif
