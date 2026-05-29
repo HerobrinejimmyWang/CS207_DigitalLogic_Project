@@ -1,0 +1,93 @@
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+--------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri May 29 23:10:58 2026
+| Host         : syjpc running 64-bit major release  (build 9200)
+| Command      : report_control_sets -verbose -file TopModule_control_sets_placed.rpt
+| Design       : TopModule
+| Device       : xc7a35t
+--------------------------------------------------------------------------------------
+
+Control Set Information
+
+Table of Contents
+-----------------
+1. Summary
+2. Histogram
+3. Flip-Flop Distribution
+4. Detailed Control Set Information
+
+1. Summary
+----------
+
++----------------------------------------------------------+-------+
+|                          Status                          | Count |
++----------------------------------------------------------+-------+
+| Number of unique control sets                            |    22 |
+| Unused register locations in slices containing registers |    44 |
++----------------------------------------------------------+-------+
+
+
+2. Histogram
+------------
+
++--------+--------------+
+| Fanout | Control Sets |
++--------+--------------+
+|      1 |            1 |
+|      2 |            1 |
+|      4 |            4 |
+|      5 |            1 |
+|      6 |            1 |
+|      8 |            9 |
+|     10 |            1 |
+|    16+ |            4 |
++--------+--------------+
+
+
+3. Flip-Flop Distribution
+-------------------------
+
++--------------+-----------------------+------------------------+-----------------+--------------+
+| Clock Enable | Synchronous Set/Reset | Asynchronous Set/Reset | Total Registers | Total Slices |
++--------------+-----------------------+------------------------+-----------------+--------------+
+| No           | No                    | No                     |               1 |            1 |
+| No           | No                    | Yes                    |             211 |           92 |
+| No           | Yes                   | No                     |               7 |            3 |
+| Yes          | No                    | No                     |               0 |            0 |
+| Yes          | No                    | Yes                    |             171 |           91 |
+| Yes          | Yes                   | No                     |              14 |            6 |
++--------------+-----------------------+------------------------+-----------------+--------------+
+
+
+4. Detailed Control Set Information
+-----------------------------------
+
++-----------------------+------------------------------------------------------------------+---------------------------------+------------------+----------------+
+|      Clock Signal     |                           Enable Signal                          |         Set/Reset Signal        | Slice Load Count | Bel Load Count |
++-----------------------+------------------------------------------------------------------+---------------------------------+------------------+----------------+
+|  sys_clk_in_IBUF_BUFG |                                                                  |                                 |                1 |              1 |
+|  sys_clk_in_IBUF_BUFG |                                                                  | u_reset_sync/sync_ff[1]_i_1_n_0 |                1 |              2 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_admin_engine/admin_state[3]_i_1_n_0     | u_reset_sync/Q[0]               |                3 |              4 |
+|  sys_clk_in_IBUF_BUFG | u_buzzer_controller/beep_type[2]_i_1_n_0                         | u_reset_sync/Q[0]               |                1 |              4 |
+|  sys_clk_in_IBUF_BUFG | u_matrix_keypad_scanner/cand_col[1]_i_1_n_0                      | u_reset_sync/Q[0]               |                2 |              4 |
+|  sys_clk_in_IBUF_BUFG | u_matrix_keypad_scanner/scan_key_col[1]_i_1_n_0                  | u_reset_sync/Q[0]               |                2 |              4 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_auth_engine/E[0]                        | u_reset_sync/Q[0]               |                4 |              5 |
+|  sys_clk_in_IBUF_BUFG | u_tick_gen/tick_1ms                                              | u_reset_sync/Q[0]               |                2 |              6 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_auth_engine/pending_password[7]_i_1_n_0 | u_reset_sync/Q[0]               |                3 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_admin_engine/committed_value[7]_i_1_n_0 | u_reset_sync/Q[0]               |                3 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_admin_engine/E[0]                       | u_reset_sync/Q[0]               |                5 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_admin_engine/selected_item_reg[0]_5[0]  | u_reset_sync/Q[0]               |                6 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_admin_engine/selected_item_reg[0]_4[0]  | u_reset_sync/Q[0]               |                4 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_admin_mode_subsystem/u_admin_engine/selected_item_reg[1]_2[0]  | u_reset_sync/Q[0]               |                3 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_main_mode_fsm/E[0]                                             | u_reset_sync/Q[0]               |                3 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_sale_engine/latched_price[7]_i_1_n_0                           | u_reset_sync/Q[0]               |                3 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_sale_engine/paid_amount[7]_i_1_n_0                             | u_reset_sync/Q[0]               |                3 |              8 |
+|  sys_clk_in_IBUF_BUFG | u_tick_gen/E[0]                                                  | u_reset_sync/Q[0]               |                6 |             10 |
+|  sys_clk_in_IBUF_BUFG | u_sale_engine/sale_total_add_req                                 | u_reset_sync/Q[0]               |                4 |             16 |
+|  sys_clk_in_IBUF_BUFG | u_matrix_keypad_scanner/scan_key_valid_reg_11[0]                 | u_reset_sync/Q[0]               |               12 |             20 |
+|  sys_clk_in_IBUF_BUFG | u_tick_gen/pix_en                                                | u_reset_sync/Q[0]               |               28 |             40 |
+|  sys_clk_in_IBUF_BUFG |                                                                  | u_reset_sync/Q[0]               |               94 |            216 |
++-----------------------+------------------------------------------------------------------+---------------------------------+------------------+----------------+
+
+

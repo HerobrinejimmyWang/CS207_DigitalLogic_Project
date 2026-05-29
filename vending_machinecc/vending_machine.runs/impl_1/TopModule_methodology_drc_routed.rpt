@@ -1,0 +1,421 @@
+Copyright 1986-2018 Xilinx, Inc. All Rights Reserved.
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+| Tool Version : Vivado v.2018.3 (win64) Build 2405991 Thu Dec  6 23:38:27 MST 2018
+| Date         : Fri May 29 23:11:58 2026
+| Host         : syjpc running 64-bit major release  (build 9200)
+| Command      : report_methodology -file TopModule_methodology_drc_routed.rpt -pb TopModule_methodology_drc_routed.pb -rpx TopModule_methodology_drc_routed.rpx
+| Design       : TopModule
+| Device       : xc7a35tcsg324-1
+| Speed File   : -1
+| Design State : Fully Routed
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+Report Methodology
+
+Table of Contents
+-----------------
+1. REPORT SUMMARY
+2. REPORT DETAILS
+
+1. REPORT SUMMARY
+-----------------
+            Netlist: netlist
+          Floorplan: design_1
+      Design limits: <entire design considered>
+             Max violations: <unlimited>
+             Violations found: 77
++-----------+----------+-------------------------------+------------+
+| Rule      | Severity | Description                   | Violations |
++-----------+----------+-------------------------------+------------+
+| TIMING-16 | Warning  | Large setup violation         | 12         |
+| TIMING-18 | Warning  | Missing input or output delay | 65         |
++-----------+----------+-------------------------------+------------+
+
+2. REPORT DETAILS
+-----------------
+TIMING-16#1 Warning
+Large setup violation  
+There is a large setup violation of -29.674 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_g_reg[0]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#2 Warning
+Large setup violation  
+There is a large setup violation of -29.674 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_g_reg[3]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#3 Warning
+Large setup violation  
+There is a large setup violation of -29.675 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_r_reg[0]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#4 Warning
+Large setup violation  
+There is a large setup violation of -29.681 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_b_reg[2]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#5 Warning
+Large setup violation  
+There is a large setup violation of -29.687 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_r_reg[3]_lopt_replica/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#6 Warning
+Large setup violation  
+There is a large setup violation of -29.713 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_b_reg[1]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#7 Warning
+Large setup violation  
+There is a large setup violation of -29.718 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_g_reg[1]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#8 Warning
+Large setup violation  
+There is a large setup violation of -29.823 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_b_reg[3]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#9 Warning
+Large setup violation  
+There is a large setup violation of -29.828 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_b_reg[0]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#10 Warning
+Large setup violation  
+There is a large setup violation of -29.832 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_r_reg[2]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#11 Warning
+Large setup violation  
+There is a large setup violation of -30.095 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_r_reg[3]/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-16#12 Warning
+Large setup violation  
+There is a large setup violation of -30.101 ns between u_admin_mode_subsystem/u_numeric_input_buffer/current_value_reg[15]/C (clocked by sys_clk_in) and u_vga_system/vga_r_reg[3]_lopt_replica_2/D (clocked by sys_clk_in). Large setup violations at the end of those stages might be difficult to fix during the post-placement implementation flow and could be the result of non-optimal XDC constraints or non-optimal design architecture
+Related violations: <none>
+
+TIMING-18#1 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[0] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#2 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[1] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#3 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[2] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#4 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[3] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#5 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[4] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#6 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[5] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#7 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[6] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#8 Warning
+Missing input or output delay  
+An input delay is missing on exp_io[7] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#9 Warning
+Missing input or output delay  
+An input delay is missing on sys_rst_n relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#10 Warning
+Missing input or output delay  
+An output delay is missing on audio_pwm_o relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#11 Warning
+Missing input or output delay  
+An output delay is missing on audio_sd_o relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#12 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[0] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#13 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[10] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#14 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[11] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#15 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[12] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#16 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[13] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#17 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[14] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#18 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[15] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#19 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[1] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#20 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[2] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#21 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[3] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#22 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[4] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#23 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[5] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#24 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[6] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#25 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[7] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#26 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[8] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#27 Warning
+Missing input or output delay  
+An output delay is missing on led_pin[9] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#28 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[0] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#29 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[1] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#30 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[2] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#31 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[3] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#32 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[4] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#33 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[5] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#34 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[6] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#35 Warning
+Missing input or output delay  
+An output delay is missing on seg_cs_pin[7] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#36 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[0] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#37 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[1] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#38 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[2] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#39 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[3] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#40 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[4] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#41 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[5] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#42 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[6] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#43 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_0_pin[7] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#44 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[0] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#45 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[1] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#46 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[2] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#47 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[3] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#48 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[4] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#49 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[5] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#50 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[6] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#51 Warning
+Missing input or output delay  
+An output delay is missing on seg_data_1_pin[7] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#52 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[0] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#53 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[10] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#54 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[11] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#55 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[1] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#56 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[2] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#57 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[3] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#58 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[4] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#59 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[5] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#60 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[6] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#61 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[7] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#62 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[8] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#63 Warning
+Missing input or output delay  
+An output delay is missing on vga_data_pin[9] relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#64 Warning
+Missing input or output delay  
+An output delay is missing on vga_hs_pin relative to clock(s) sys_clk_in
+Related violations: <none>
+
+TIMING-18#65 Warning
+Missing input or output delay  
+An output delay is missing on vga_vs_pin relative to clock(s) sys_clk_in
+Related violations: <none>
+
+
